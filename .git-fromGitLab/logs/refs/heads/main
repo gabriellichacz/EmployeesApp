@@ -1,0 +1,22 @@
+0000000000000000000000000000000000000000 fac41841be7e2b75e9ba7579a17058ca80efff62 gabriellichacz <gabriellichacz@gmail.com> 1661408419 +0200	initial pull
+fac41841be7e2b75e9ba7579a17058ca80efff62 a1aa01c1ba71a4fe6f540b25de7ad1b2f4d27f05 gabriellichacz <gabriellichacz@gmail.com> 1661413401 +0200	commit: Tabela pracownikow z ich podstawowymi danymi
+a1aa01c1ba71a4fe6f540b25de7ad1b2f4d27f05 278c70a0beb50dc683ac40c0ceefa13b34191576 gabriellichacz <gabriellichacz@gmail.com> 1661415179 +0200	commit: Funkcja do zwracania najnowszej danej z kolumny dla danego pracownika
+278c70a0beb50dc683ac40c0ceefa13b34191576 8f1465bf5a55997b97035e64d9b95df2e6031797 gabriellichacz <gabriellichacz@gmail.com> 1661415611 +0200	commit: Funkcje do zwracania aktualnej pensji i tytulu pracownika
+8f1465bf5a55997b97035e64d9b95df2e6031797 95403be7ee9c1ad543afab031fe17b481212a9cc gabriellichacz <gabriellichacz@gmail.com> 1661423176 +0200	commit: Zmienione klucze glowne w modelach + walka z relacja belongsToThrough
+95403be7ee9c1ad543afab031fe17b481212a9cc 8dda6d337a3bc60d689c6dad9afa643ff1321e5d gabriellichacz <gabriellichacz@gmail.com> 1661431798 +0200	commit: Zmiany w podejsciu do relacji miedzy departamentami a pracownikami
+8dda6d337a3bc60d689c6dad9afa643ff1321e5d 0dc66a5704e614da484c9e37444f767b2c7f8f05 gabriellichacz <gabriellichacz@gmail.com> 1662292380 +0200	pull origin master: Fast-forward
+0dc66a5704e614da484c9e37444f767b2c7f8f05 e103b63093c6a676376290202ef94e38a3c2a1f3 gabriellichacz <gabriellichacz@gmail.com> 1662359487 +0200	commit: Poprawiona kwerenda
+e103b63093c6a676376290202ef94e38a3c2a1f3 3f27098211ffb9c8191e200372da4aaf81740c00 gabriellichacz <gabriellichacz@gmail.com> 1662371308 +0200	commit: Eksport do csv dziala z DataTables
+3f27098211ffb9c8191e200372da4aaf81740c00 d7676308e6824d68dc702d1c6b6360a67c63c45d gabriellichacz <gabriellichacz@gmail.com> 1662373404 +0200	commit: Wybieranie przedzialu pensji dziala
+d7676308e6824d68dc702d1c6b6360a67c63c45d b2a8f54a7b6a1f11baabb80969ef371fcb7b04d2 gabriellichacz <gabriellichacz@gmail.com> 1662374118 +0200	commit: Wybieranie plci dziala
+b2a8f54a7b6a1f11baabb80969ef371fcb7b04d2 df24b0c5157746b30d6b7acd78c5006ce4bf3d4e gabriellichacz <gabriellichacz@gmail.com> 1662379799 +0200	commit: Filtrowanie po departamencie, statusie pracownika (do poprawy)
+df24b0c5157746b30d6b7acd78c5006ce4bf3d4e f1ad3182dd6f3909fd59aab841d9fe6a82d27fde gabriellichacz <gabriellichacz@gmail.com> 1662385177 +0200	commit: Poprawny filtr obecnej pensji - zoptymalizowac i dodac wszedzie
+f1ad3182dd6f3909fd59aab841d9fe6a82d27fde 208b264a567481d79ace9b44e699feb588010fd5 gabriellichacz <gabriellichacz@gmail.com> 1662386371 +0200	commit: Filtr dodany wszedzie, ale wymaga jeszcze poprawek
+208b264a567481d79ace9b44e699feb588010fd5 856082e7c54d48e3334d5618029e52e3db27e63d gabriellichacz <gabriellichacz@gmail.com> 1662454035 +0200	commit: Wszystkie kwerendy dzialaja poprawnie - do zrobienia polaczenie ich
+856082e7c54d48e3334d5618029e52e3db27e63d ae6830130efc75327e89dafc8fd92855d0d89581 gabriellichacz <gabriellichacz@gmail.com> 1662461409 +0200	commit: Wszystkie filtry zlozone w jedna kwerende + posprzatanie kontrolera
+ae6830130efc75327e89dafc8fd92855d0d89581 15e2bd006a6a3e20a4892e18f456e21dd89eb974 gabriellichacz <gabriellichacz@gmail.com> 1662462188 +0200	commit: Obsluga bledow
+15e2bd006a6a3e20a4892e18f456e21dd89eb974 c5f08699c646268c9eae4209234f7fb38f5e3edf gabriellichacz <gabriellichacz@gmail.com> 1662464183 +0200	commit: Poprawki w obsludze bledow
+c5f08699c646268c9eae4209234f7fb38f5e3edf 4352cf259ecde32a4288c0df237ddcbc2fc96101 gabriellichacz <gabriellichacz@gmail.com> 1662468152 +0200	commit: Naprawiony pagination przy filtrowaniu - links zapisuja wartosc filtra
+4352cf259ecde32a4288c0df237ddcbc2fc96101 8ec2fdf1c9de6aed7e08aa2087c94be2998024cb gabriellichacz <gabriellichacz@gmail.com> 1662471934 +0200	commit: Frontendowa czesc eksportu zrobiona - teraz w kontrolerze zsumowac dane i wyrzucic jako csv
+8ec2fdf1c9de6aed7e08aa2087c94be2998024cb 96a684e724669c698e4701f3ac52c7ca847e4c4f gabriellichacz <gabriellichacz@gmail.com> 1662472839 +0200	commit: Sumowanie wyplat, pozostaje dodac te sume do arraya i wyeksportowac
+96a684e724669c698e4701f3ac52c7ca847e4c4f 13f91ac1052fea40bb84496a93094c209fc66ae5 gabriellichacz <gabriellichacz@gmail.com> 1663050045 +0200	pull origin master: Fast-forward
