@@ -24,7 +24,8 @@ https://github.com/datacharmer/test_db
 Database dump files are in Employees_Database_MySQLSample.zip.  
 
 ## PHP 8.1.6
-## Node ---
+## Node v20.7.0
+## NPM 10.1.0
 
 # Features  
 Table view of data, some filtering and chosen employees data export to csv.
