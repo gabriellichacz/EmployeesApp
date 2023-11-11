@@ -23,7 +23,7 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        return view('dashboard', [
+        return view('employees.dashboard', [
             'employees' => $this->basicTable(),
             'dep_names' => $this->depNames(),
         ]);
@@ -173,7 +173,7 @@ class DashboardController extends Controller
             $model = 0;
         }
 
-        return view('dashboard', [
+        return view('employees.dashboard', [
             'employees' => $model,
             'dep_names' => $this->depNames(),
         ]);
