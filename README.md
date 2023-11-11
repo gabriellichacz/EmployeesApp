@@ -10,12 +10,12 @@ php artisan serve
 npm run dev
 ```
 
-## Instalation  
+## Instalation
 1. Import database dump files to MySQL.
 2. Make a copy of ```.env.example``` file and name it ```.env```.
-3. run ```composer install```.
-4. run ```npm install```.
-5. run ```php artisan key:generate```.
+3. Run ```composer install```.
+4. Run ```npm install```.
+5. Run ```php artisan key:generate```.
 
 # Requirement  
 ## Employees Sample Database  
