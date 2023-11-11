@@ -1,23 +1,30 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
-# About
+# About  
 Table view of data, some filtering and chosen employees data export to csv, created in PHP/Laravel 9 and Tailwind.
 
-# Usage
-
-Server start
+# Usage  
+## Server start  
 ```
 php artisan serve
 npm run dev
 ```
 
-# Requirement
+## Instalation
+1. Import database dump files to MySQL.
+2. Make a copy of ```.env.example``` file and name it ```.env```.
+3. Run ```composer install```.
+4. Run ```npm install```.
+5. Run ```php artisan key:generate```.
 
-Employees Sample Database </br>
-https://dev.mysql.com/doc/employee/en/employees-preface.html
+# Requirement  
+## Employees Sample Database  
+https://dev.mysql.com/doc/employee/en/employees-preface.html  
+https://github.com/datacharmer/test_db  
+Database dump files are in Employees_Database_MySQLSample.zip.  
 
-Database dump files are in Employees_Database_MySQLSample.zip.
+## PHP 8.1.6
+## Node ---
 
-# Features
-
+# Features  
 Table view of data, some filtering and chosen employees data export to csv.
