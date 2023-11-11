@@ -16,9 +16,9 @@
                 <div class="row justify-content-center">
                     <div class="form-group row">
                         <select name="gender" id="gender">
-                            <option value="A" selected> {{ __('All') }} </option>
-                            <option value="M"> {{ __('Male') }} </option>
-                            <option value="F"> {{ __('Female') }} </option>
+                            <option value="A" @selected($filters['gender'] == ('A' || null))> {{ __('All') }} </option>
+                            <option value="M" @selected($filters['gender'] == 'M')> {{ __('Male') }} </option>
+                            <option value="F" @selected($filters['gender'] == 'F')> {{ __('Female') }} </option>
                         </select>
                     </div>
                 </div>
@@ -27,9 +27,9 @@
                 <div class="row justify-content-center">
                     <div class="form-group row">
                         <select name="status" id="status">
-                            <option value="all" selected> {{ __('All employees' )}} </option>
-                            <option value="working"> {{ __('Currently working' ) }} </option>
-                            <option value="former">  {{ __('Former employees' ) }} </option>
+                            <option value="all" @selected($filters['status'] == ('all' || null))> {{ __('All employees' )}} </option>
+                            <option value="working" @selected($filters['status'] == 'working')> {{ __('Currently working' ) }} </option>
+                            <option value="former" @selected($filters['status'] == 'former')>  {{ __('Former employees' ) }} </option>
                         </select>
                     </div>
                 </div>
@@ -39,9 +39,9 @@
                     <div class="form-group row">
                         <select name="department" id="department">
                             @if (sizeof($dep_names) > 0)
-                                <option value="all" selected> {{ __('All departments') }} </option>
+                                <option value="all" @selected($filters['department'] == ('all' || null))> {{ __('All departments') }} </option>
                                 @foreach($dep_names as $key => $dep_name)
-                                    <option value="{{ $dep_name }}"> {{ $dep_name }} </option>
+                                    <option value="{{ $dep_name }}" @selected($filters['department'] == $dep_name)> {{ $dep_name }} </option>
                                 @endforeach
                             @else
                                 <option value="all" selected> {{ __('Database connection error') }} </option>

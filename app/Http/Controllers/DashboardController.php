@@ -90,6 +90,7 @@ class DashboardController extends Controller
      */
     public function filtering(Request $request)
     {
+        $filters = [];
         $max = null;
         $min = null;
         $gender = null;
@@ -97,18 +98,23 @@ class DashboardController extends Controller
         $department = null;
         if ($request->has('max_salary')) {
             $max = intval($request->max_salary);
+            $filters['max_salary'] = $max;
         }
         if ($request->has('min_salary')) {
             $min = intval($request->min_salary);
+            $filters['min_salary'] = $min;
         }
         if ($request->has('gender')) {
             $gender = $request->gender;
+            $filters['gender'] = $gender;
         }
         if ($request->has('status')) {
             $status = $request->status;
+            $filters['status'] = $status;
         }
         if ($request->has('department')) {
             $department = $request->department;
+            $filters['department'] = $department;
         }
 
         try {
@@ -171,6 +177,7 @@ class DashboardController extends Controller
         return view('employees.dashboard', [
             'employees' => $model,
             'dep_names' => $this->depNames(),
+            'filters' => $filters
         ]);
     }
 

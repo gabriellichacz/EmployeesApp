@@ -26,3 +26,4 @@
     </div>
 
 </x-app-layout>
+@include('employees.components.scripts')
