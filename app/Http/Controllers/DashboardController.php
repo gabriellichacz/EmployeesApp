@@ -90,30 +90,25 @@ class DashboardController extends Controller
      */
     public function filtering(Request $request)
     {
-        try {
+        $max = null;
+        $min = null;
+        $gender = null;
+        $status = null;
+        $department = null;
+        if ($request->has('max_salary')) {
             $max = intval($request->max_salary);
+        }
+        if ($request->has('min_salary')) {
             $min = intval($request->min_salary);
-        } catch (\Throwable $th) {
-            $max = null;
-            $min = null;
         }
-
-        try {
-            $gender =  $request->gender;
-        } catch (\Throwable $th) {
-            $gender = null;
+        if ($request->has('gender')) {
+            $gender = $request->gender;
         }
-
-        try {
-            $status =  $request->status;
-        } catch (\Throwable $th) {
-            $status = null;
+        if ($request->has('status')) {
+            $status = $request->status;
         }
-
-        try {
-            $department =  $request->department;
-        } catch (\Throwable $th) {
-            $department = null;
+        if ($request->has('department')) {
+            $department = $request->department;
         }
 
         try {
