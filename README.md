@@ -4,17 +4,27 @@
 Table view of data, some filtering and chosen employees data export to csv, created in PHP/Laravel 9 and Tailwind.
 
 # Usage  
-Server start
+## Server start  
 ```
 php artisan serve
 npm run dev
 ```
 
+## Instalation  
+1. Import database dump files to MySQL.
+2. Make a copy of ```.env.example``` file and name it ```.env```.
+3. run ```composer install```.
+4. run ```npm install```.
+5. run ```php artisan key:generate```.
+
 # Requirement  
-Employees Sample Database  
+## Employees Sample Database  
 https://dev.mysql.com/doc/employee/en/employees-preface.html  
 https://github.com/datacharmer/test_db  
 Database dump files are in Employees_Database_MySQLSample.zip.  
+
+## PHP 8.1.6
+## Node ---
 
 # Features  
 Table view of data, some filtering and chosen employees data export to csv.
