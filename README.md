@@ -14,7 +14,8 @@ npm run dev
 # Requirement
 
 Employees Sample Database </br>
-https://dev.mysql.com/doc/employee/en/employees-preface.html
+https://dev.mysql.com/doc/employee/en/employees-preface.html  
+https://github.com/datacharmer/test_db
 
 Database dump files are in Employees_Database_MySQLSample.zip.
 
