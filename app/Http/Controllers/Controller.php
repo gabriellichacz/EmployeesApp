@@ -11,6 +11,11 @@ class Controller extends BaseController
 
     public function welcome()
     {
-        return view('welcome');
+        return view('auth.login');
+    }
+
+    public function home()
+    {
+        return view('home');
     }
 }
