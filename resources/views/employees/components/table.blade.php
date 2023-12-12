@@ -31,7 +31,7 @@
             </form>
         @else
             <tr>
-                {{ __('Database connection error') }}
+                {{ __('Problem połączenia z bazą danych') }}
             </tr>
         @endif
     </tbody>

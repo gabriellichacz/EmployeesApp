@@ -9,11 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    protected $request;
+    /** @var array $filters */
+    protected array $filters;
 
+    /**
+     * Construct function
+     */
     public function __construct()
     {
         ini_set('max_execution_time', 300);
+        $this->filters = $this->initFilters();
     }
 
     /**
@@ -26,6 +31,7 @@ class DashboardController extends Controller
         return view('employees.dashboard', [
             'employees' => $this->basicTable(),
             'dep_names' => $this->depNames(),
+            'filters' => $this->filters
         ]);
     }
 
@@ -64,19 +70,23 @@ class DashboardController extends Controller
      */
     public function depNames()
     {
-        try {
-            $dep = Department::select('dept_name')->distinct()->get()->toArray();
+        try
+        {
+            $dep = Department::select('dept_name')
+                ->distinct()
+                ->get()
+                ->toArray();
 
-            // Converting names
             $dep = array_map(function ($item) {
                 return [$item['dept_name']];
             }, $dep);
 
-            // Converting to 1d array
             $dep = array_reduce($dep, function ($carry, $array) {
                 return array_merge($carry, $array);
             }, []);
-        } catch (\Throwable $th) {
+        }
+        catch (\Exception $e)
+        {
             $dep = 0;
         }
 
@@ -88,44 +98,54 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function filtering(Request $request)
+    public function filtering(Request $request) : \Illuminate\Contracts\Support\Renderable
     {
-        $filters = [];
         $max = null;
         $min = null;
         $gender = null;
         $status = null;
         $department = null;
-        if ($request->has('max_salary')) {
+
+        if ($request->has('max_salary'))
+        {
             $max = intval($request->max_salary);
-            $filters['max_salary'] = $max;
-        }
-        if ($request->has('min_salary')) {
-            $min = intval($request->min_salary);
-            $filters['min_salary'] = $min;
-        }
-        if ($request->has('gender')) {
-            $gender = $request->gender;
-            $filters['gender'] = $gender;
-        }
-        if ($request->has('status')) {
-            $status = $request->status;
-            $filters['status'] = $status;
-        }
-        if ($request->has('department')) {
-            $department = $request->department;
-            $filters['department'] = $department;
+            $this->filters['max_salary'] = $max;
         }
 
-        try {
+        if ($request->has('min_salary'))
+        {
+            $min = intval($request->min_salary);
+            $this->filters['min_salary'] = $min;
+        }
+
+        if ($request->has('gender'))
+        {
+            $gender = $request->gender;
+            $this->filters['gender'] = $gender;
+        }
+
+        if ($request->has('status'))
+        {
+            $status = $request->status;
+            $this->filters['status'] = $status;
+        }
+
+        if ($request->has('department'))
+        {
+            $department = $request->department;
+            $this->filters['department'] = $department;
+        }
+
+        try
+        {
             $model = DB::table('employees')
-                /* Where gender */
+                // Where gender
                 ->when(($gender && $gender != null && $gender != 'A'), function ($query) use ($gender) {
                     $query->where('employees.gender', $gender);
                 })
                 ->select('employees.emp_no', 'employees.first_name', 'employees.last_name', 'titles.title', 'departments.dept_name', 'm1.salary as salary')
                 ->join('dept_emp', 'employees.emp_no', '=', 'dept_emp.emp_no')
-                /* Where department */
+                // Where department
                 ->when(($department && $department != null && $department != 'all'), function ($query) use ($department) {
                     $query->join('departments', function ($join) use ($department) {
                         $join->on('dept_emp.dept_no', '=', 'departments.dept_no')
@@ -136,49 +156,75 @@ class DashboardController extends Controller
                 })
                 ->join('titles', 'employees.emp_no', '=', 'titles.emp_no');
 
-            /* Conditions related to salaries table */
-            if ($max && $min && $max != null && $min != null) { /* Salary between */
+            // Conditions related to salaries table
+            if ($max && $min && $max != null && $min != null) // Salary between
+            {
                 $model = $model->join('salaries as m1', function ($join) use ($min, $max) {
                     $join->on('employees.emp_no', '=', 'm1.emp_no')
                         ->whereBetween('m1.salary', [$min, $max]);
                 });
-            } else if ($status && $status != null && $status != 'all' && $status == 'working') { /* Current employees */
+            }
+            else if ($status && $status != null && $status != 'all' && $status == 'working') // Current employees
+            {
                 $model = $model->join('salaries as m1', function ($join) {
                     $join->on('employees.emp_no', '=', 'm1.emp_no')
                         ->where('m1.to_date', '>=', date("Y-m-d"));
                 });
-            } else if ($status && $status != null && $status != 'all' && $status = 'former') { /* Former employees */
+            }
+            else if ($status && $status != null && $status != 'all' && $status = 'former') // Former employees
+            {
                 $model = $model->join('salaries as m1', function ($join) {
                     $join->on('employees.emp_no', '=', 'm1.emp_no')
                         ->where('m1.to_date', '<', date("Y-m-d"));
                 });
-            } else {
+            }
+            else
+            {
                 $model = $model->join('salaries as m1', 'employees.emp_no', '=', 'm1.emp_no');
             }
 
-            /* Rest of the query */
-            $model = $model->leftJoin('salaries as m2', function ($join) {
-                $join->on('employees.emp_no', '=', 'm2.emp_no')
+            // Rest of the query
+            $model = $model
+                ->leftJoin('salaries as m2', function ($join) {
+                    $join->on('employees.emp_no', '=', 'm2.emp_no')
                     ->where(function ($query) {
                         $query->whereColumn('m1.to_date', '<', 'm2.to_date')
-                            ->orWhere(function ($query) {
-                                $query->whereColumn('m1.to_date', '=', 'm2.to_date')
-                                    ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
-                            });
+                        ->orWhere(function ($query) {
+                            $query->whereColumn('m1.to_date', '=', 'm2.to_date')
+                            ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
+                        });
                     });
-            })
+                })
                 ->whereNull('m2.emp_no')
                 ->groupBy('employees.emp_no')
                 ->paginate(15);
-        } catch (\Throwable $th) {
+        }
+        catch (\Exception $e)
+        {
             $model = 0;
         }
 
         return view('employees.dashboard', [
             'employees' => $model,
             'dep_names' => $this->depNames(),
-            'filters' => $filters
+            'filters' => $this->filters
         ]);
+    }
+
+    /**
+     * Init filters on construct
+     * 
+     * @return array
+     */
+    protected function initFilters() : array
+    {
+        $filters = [];
+        $filters['max_salary'] = null;
+        $filters['min_salary'] = null;
+        $filters['gender'] = null;
+        $filters['status'] = null;
+        $filters['department'] = null;
+        return $filters;
     }
 
     /**
@@ -189,34 +235,37 @@ class DashboardController extends Controller
      */
     public function export(Request $request)
     {
-        try {
+        try
+        {
             $emp_ids = $request->checkboxExport;
-        } catch (\Throwable $th) {
+        }
+        catch (\Exception $e)
+        {
             $emp_ids = null;
             return response('Bad request', 404);
         }
 
-        // First row for csv file
-        $data[0] = array(
+        $data[0] = [
             "first_name",
             "last_name",
             "department",
             "title",
             "salary",
             "salary_sum"
-        );
+        ];
 
-        // Populating array with data
-        foreach ($emp_ids as $emp_id) {
+        foreach ($emp_ids as $emp_id)
+        {
             $employee = Employee::where('employees.emp_no', $emp_id)->first();
-            $data[$emp_id + 1] = array(
+
+            $data[$emp_id + 1] = [
                 $employee->first_name,
                 $employee->last_name,
                 $employee->departments()->first()->dept_name,
                 $employee->currTitle(),
                 $employee->currSalary(),
                 intval($employee->salaries()->sum('salary'))
-            );
+            ];
         }
 
         $this->arrayToCsvDownload($data);
@@ -225,22 +274,23 @@ class DashboardController extends Controller
     /**
      * Creates csv file and downloads it
      *
-     * @param mixed $array data array to export
+     * @param array $array
      * @param string $filename
-     * @param string $delimiter csv file delimeter
+     * @param string $delimiter
      * @return void
      */
-    function arrayToCsvDownload($array, $filename = "export.csv", $delimiter = ";")
+    function arrayToCsvDownload(array $array, string $filename = "export.csv", string $delimiter = ";")
     {
-        $f = fopen('php://memory', 'w'); // open raw memory as file
+        $f = fopen('php://memory', 'w');
 
-        foreach ($array as $line) {
-            fputcsv($f, $line, $delimiter); // generate csv lines from the inner arrays
+        foreach ($array as $line)
+        {
+            fputcsv($f, $line, $delimiter);
         }
 
-        fseek($f, 0); // reset the file pointer to the start of the file
-        header('Content-Type: text/csv'); // tell the browser it's going to be a csv file
-        header('Content-Disposition: attachment; filename="' . $filename . '";'); // tell the browser we want to save it instead of displaying it
-        fpassthru($f); // make php send the generated csv lines to the browser
+        fseek($f, 0);
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $filename . '";');
+        fpassthru($f);
     }
 }
