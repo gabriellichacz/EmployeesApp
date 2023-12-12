@@ -9,6 +9,9 @@ Table view of data, some filtering and chosen employees data export to csv, crea
 php artisan serve
 npm run dev
 ```
+## Dev credentials  
+admin@admin.com  
+admin123
 
 ## Instalation
 1. Import database dump files to MySQL.
