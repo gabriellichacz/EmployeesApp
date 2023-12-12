@@ -7,7 +7,7 @@ Route::get('/', [App\Http\Controllers\Controller::class, 'welcome'])->name('welc
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\DashboardController::class, 'home'])->name('home');
-    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::post('/filter', [App\Http\Controllers\DashboardController::class, 'filtering'])->name('filter.get');
 });
 
