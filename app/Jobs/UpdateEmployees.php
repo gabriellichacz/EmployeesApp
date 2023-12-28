@@ -112,19 +112,20 @@ class UpdateEmployees implements ShouldQueue
      * @param string $raiseVersion
      * @param int $raiseAmount
      * @param int $currentSalary
-     * @return void
+     * @return int
      */
     private function calculateRaise(string $raiseVersion, int $raiseAmount, int $currentSalary)
     {
         switch ($raiseVersion)
         {
-            case 'const':
-                $currentSalary += $raiseAmount;
+            case 'raise_const':
+                $newSalary = $currentSalary + $raiseAmount;
                 break;
-            case 'perc':
-                $currentSalary *= $raiseAmount;
+            case 'raise_perc':
+                $newSalary = $currentSalary * $raiseAmount;
                 break;
         }
+        return $newSalary;
     }
 
     /**
