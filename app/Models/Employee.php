@@ -161,13 +161,13 @@ class Employee extends Model
         $model = $model
             ->leftJoin('salaries as m2', function ($join) {
                 $join->on('employees.emp_no', '=', 'm2.emp_no')
-                ->where(function ($query) {
-                    $query->whereColumn('m1.to_date', '<', 'm2.to_date')
-                    ->orWhere(function ($query) {
-                        $query->whereColumn('m1.to_date', '=', 'm2.to_date')
-                        ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
+                    ->where(function ($query) {
+                        $query->whereColumn('m1.to_date', '<', 'm2.to_date')
+                            ->orWhere(function ($query) {
+                            $query->whereColumn('m1.to_date', '=', 'm2.to_date')
+                                ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
+                        });
                     });
-                });
             })
             ->whereNull('m2.emp_no')
             ->groupBy('employees.emp_no');
