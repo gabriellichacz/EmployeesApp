@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Department extends Model
 {
@@ -42,5 +44,36 @@ class Department extends Model
         }, []);
 
         return $dep;
+    }
+
+    /**
+     * Get departments list and their employee count
+     *
+     * 
+     */
+    public static function getDepartmentEmployeeCount()
+    {
+        $departmentCountList = Cache::pull('departmentCountList');
+        if (!empty($departmentCountList))
+        {
+            return $departmentCountList;
+        }
+
+        $departmentsList = self::getDepartmentList();
+        $departmentCountList = [];
+        foreach ($departmentsList as $department)
+        {
+            $departmentCountList[$department] = DB::table('employees')
+                ->select('employees.emp_no', 'departments.dept_name')
+                ->join('dept_emp', 'employees.emp_no', '=', 'dept_emp.emp_no')
+                ->join('departments', 'dept_emp.dept_no', '=', 'departments.dept_no')
+                ->where('dept_name', $department)
+                ->groupBy('employees.emp_no')
+                ->get()
+                ->count();
+        }
+        Cache::put('departmentCountList', $departmentCountList);
+
+        return $departmentCountList;
     }
 }
