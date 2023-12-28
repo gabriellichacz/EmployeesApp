@@ -4,6 +4,11 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Aktualizacje pracowników') }}
         </h2>
+        @if (session('alert'))
+            <div class="alert alert-success">
+                {{ session('alert') }}
+            </div>
+        @endif
     </x-slot>
 
     <div class="container mx-auto px-4 bg-white">

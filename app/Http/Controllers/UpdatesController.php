@@ -91,7 +91,8 @@ class UpdatesController extends Controller
             ];
         }
 
-        $updateQueue = new UpdateEmployees($gender, $department, $min, $max, $status, $updateRule);
-        $updateQueue->dispatch();
+        UpdateEmployees::dispatch($gender, $department, $min, $max, $status, $updateRule);
+
+        return redirect()->back()->with('alert', 'Aktualizacja dodana do kolejki.');
     }
 }
