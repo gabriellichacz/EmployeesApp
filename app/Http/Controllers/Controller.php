@@ -14,7 +14,7 @@ class Controller extends BaseController
         return view('auth.login');
     }
 
-    public function home()
+    public function index()
     {
         return view('home');
     }

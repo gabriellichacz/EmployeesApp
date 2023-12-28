@@ -26,7 +26,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function dashboard()
+    public function index()
     {
         return view('employees.dashboard', [
             'employees' => $this->basicTable(),
@@ -42,25 +42,7 @@ class DashboardController extends Controller
      */
     public function basicTable()
     {
-        return DB::table('employees')
-            ->select('employees.emp_no', 'employees.first_name', 'employees.last_name', 'titles.title', 'departments.dept_name', 'm1.salary as salary')
-            ->join('dept_emp', 'employees.emp_no', '=', 'dept_emp.emp_no')
-            ->join('departments', 'dept_emp.dept_no', '=', 'departments.dept_no')
-            ->join('titles', 'employees.emp_no', '=', 'titles.emp_no')
-            ->join('salaries as m1', 'employees.emp_no', '=', 'm1.emp_no')
-            ->leftJoin('salaries as m2', function ($join) {
-                $join->on('employees.emp_no', '=', 'm2.emp_no')
-                    ->where(function ($query) {
-                        $query->whereColumn('m1.to_date', '<', 'm2.to_date')
-                            ->orWhere(function ($query) {
-                                $query->whereColumn('m1.to_date', '=', 'm2.to_date')
-                                    ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
-                            });
-                    });
-            })
-            ->whereNull('m2.emp_no')
-            ->groupBy('employees.emp_no')
-            ->paginate(15);
+        return Employee::getEmployeeTable();
     }
 
     /**
@@ -70,27 +52,7 @@ class DashboardController extends Controller
      */
     public function depNames()
     {
-        try
-        {
-            $dep = Department::select('dept_name')
-                ->distinct()
-                ->get()
-                ->toArray();
-
-            $dep = array_map(function ($item) {
-                return [$item['dept_name']];
-            }, $dep);
-
-            $dep = array_reduce($dep, function ($carry, $array) {
-                return array_merge($carry, $array);
-            }, []);
-        }
-        catch (\Exception $e)
-        {
-            $dep = 0;
-        }
-
-        return $dep;
+        return Department::getDepartmentList();
     }
 
     /**
@@ -136,73 +98,7 @@ class DashboardController extends Controller
             $this->filters['department'] = $department;
         }
 
-        try
-        {
-            $model = DB::table('employees')
-                // Where gender
-                ->when(($gender && $gender != null && $gender != 'A'), function ($query) use ($gender) {
-                    $query->where('employees.gender', $gender);
-                })
-                ->select('employees.emp_no', 'employees.first_name', 'employees.last_name', 'titles.title', 'departments.dept_name', 'm1.salary as salary')
-                ->join('dept_emp', 'employees.emp_no', '=', 'dept_emp.emp_no')
-                // Where department
-                ->when(($department && $department != null && $department != 'all'), function ($query) use ($department) {
-                    $query->join('departments', function ($join) use ($department) {
-                        $join->on('dept_emp.dept_no', '=', 'departments.dept_no')
-                            ->where('departments.dept_name', $department);
-                    });
-                }, function ($query) {
-                    $query->join('departments', 'dept_emp.dept_no', '=', 'departments.dept_no');
-                })
-                ->join('titles', 'employees.emp_no', '=', 'titles.emp_no');
-
-            // Conditions related to salaries table
-            if ($max && $min && $max != null && $min != null) // Salary between
-            {
-                $model = $model->join('salaries as m1', function ($join) use ($min, $max) {
-                    $join->on('employees.emp_no', '=', 'm1.emp_no')
-                        ->whereBetween('m1.salary', [$min, $max]);
-                });
-            }
-            else if ($status && $status != null && $status != 'all' && $status == 'working') // Current employees
-            {
-                $model = $model->join('salaries as m1', function ($join) {
-                    $join->on('employees.emp_no', '=', 'm1.emp_no')
-                        ->where('m1.to_date', '>=', date("Y-m-d"));
-                });
-            }
-            else if ($status && $status != null && $status != 'all' && $status = 'former') // Former employees
-            {
-                $model = $model->join('salaries as m1', function ($join) {
-                    $join->on('employees.emp_no', '=', 'm1.emp_no')
-                        ->where('m1.to_date', '<', date("Y-m-d"));
-                });
-            }
-            else
-            {
-                $model = $model->join('salaries as m1', 'employees.emp_no', '=', 'm1.emp_no');
-            }
-
-            // Rest of the query
-            $model = $model
-                ->leftJoin('salaries as m2', function ($join) {
-                    $join->on('employees.emp_no', '=', 'm2.emp_no')
-                    ->where(function ($query) {
-                        $query->whereColumn('m1.to_date', '<', 'm2.to_date')
-                        ->orWhere(function ($query) {
-                            $query->whereColumn('m1.to_date', '=', 'm2.to_date')
-                            ->whereColumn('m1.emp_no', '<', 'm2.emp_no');
-                        });
-                    });
-                })
-                ->whereNull('m2.emp_no')
-                ->groupBy('employees.emp_no')
-                ->paginate(15);
-        }
-        catch (\Exception $e)
-        {
-            $model = 0;
-        }
+        $model = Employee::getEmployeeTableFiltered($gender, $department, $min, $max, $status);
 
         return view('employees.dashboard', [
             'employees' => $model,
