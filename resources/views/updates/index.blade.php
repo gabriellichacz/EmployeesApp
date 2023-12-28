@@ -11,7 +11,9 @@
             <div class="flex flex-wrap -mx-4">
                 <div class="w-full px-4 ">
                     <div class="max-w-full overflow-x-auto">
-                        
+                        <table class="table table-bordered table-hover table-auto w-full data-table-big" id="data-table" class="display">
+                            @include('updates.components.table')
+                        </table>
                     </div>
                 </div>
             </div>

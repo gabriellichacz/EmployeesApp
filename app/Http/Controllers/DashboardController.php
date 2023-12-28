@@ -12,6 +12,9 @@ class DashboardController extends Controller
     /** @var array $filters */
     protected array $filters;
 
+    /** @var Employee $employeeModel */
+    protected Employee $employeeModel;
+
     /**
      * Construct function
      */
@@ -19,6 +22,7 @@ class DashboardController extends Controller
     {
         ini_set('max_execution_time', 300);
         $this->filters = $this->initFilters();
+        $this->employeeModel = new Employee;
     }
 
     /**
@@ -26,7 +30,7 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index() : \Illuminate\Contracts\Support\Renderable
     {
         return view('employees.dashboard', [
             'employees' => $this->basicTable(),
@@ -38,19 +42,19 @@ class DashboardController extends Controller
     /**
      * Basic table with all data
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function basicTable()
+    public function basicTable() : \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return Employee::getEmployeeTable();
+        return $this->employeeModel->getEmployeeTable();
     }
 
     /**
      * List of departments
      *
-     * @return \Illuminate\Database\Query\Builder
+     * @return array
      */
-    public function depNames()
+    public function depNames() : array
     {
         return Department::getDepartmentList();
     }
@@ -98,7 +102,7 @@ class DashboardController extends Controller
             $this->filters['department'] = $department;
         }
 
-        $model = Employee::getEmployeeTableFiltered($gender, $department, $min, $max, $status);
+        $model = $this->employeeModel->getEmployeeTableFiltered($gender, $department, $min, $max, $status);
 
         return view('employees.dashboard', [
             'employees' => $model,

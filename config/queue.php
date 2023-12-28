@@ -42,6 +42,14 @@ return [
             'after_commit' => false,
         ],
 
+        'emp-updates' => [
+            'driver' => 'database',
+            'table' => 'jobs',
+            'queue' => 'emp-updates',
+            'retry_after' => 90,
+            'after_commit' => false,
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => 'localhost',

@@ -3,23 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Jobs\UpdateEmployees;
+
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UpdatesController extends Controller
 {
-
     /**
-     * Construct function
+     * Employee updates
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function __construct()
+    public function index() : \Illuminate\Contracts\Support\Renderable
     {
-        
+        return view('updates.index', [
+            'dep_names' => $this->depNames()
+        ]);
     }
 
-    public function index()
+    /**
+     * List of departments
+     *
+     * @return array
+     */
+    public function depNames() : array
     {
-        return view('updates.index');
+        return Department::getDepartmentList();
+    }
+
+    public function addUpdateRule()
+    {
+        UpdateEmployees::dispatch();
     }
 }
