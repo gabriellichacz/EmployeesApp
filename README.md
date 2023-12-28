@@ -8,7 +8,7 @@ Table view of data, some filtering and chosen employees data export to csv, crea
 ```
 php artisan serve
 npm run dev
-php artisan queue:listen emp-updates -v
+php artisan queue:work emp-updates -v
 ```
 ## Dev credentials  
 admin@admin.com  
