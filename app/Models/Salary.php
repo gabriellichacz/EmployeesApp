@@ -14,6 +14,10 @@ class Salary extends Model
      */
     protected $table = 'salaries';
 
+    public $timestamps = false;
+
+    protected $guarded = [];  
+
     /**
      * Relation between salary and employee
      *

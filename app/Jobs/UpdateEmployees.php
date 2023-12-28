@@ -95,12 +95,14 @@ class UpdateEmployees implements ShouldQueue
     protected function updateSalaries(\Illuminate\Database\Query\Builder $query, string $version, int $raiseAmount)
     {
         $salaries = $query->pluck('salary', 'emp_no');
+        $todayDate = date('Y-m-d');
         foreach ($salaries as $empNo => $salary)
         {
+            Salary::where('emp_no', $empNo)->where('from_date', $todayDate)->delete();
             $newSalary = new Salary;
             $newSalary->emp_no = $empNo;
             $newSalary->salary = $this->calculateRaise($version, $raiseAmount, $salary);
-            $newSalary->from_date = date('Y-m-d');
+            $newSalary->from_date = $todayDate;
             $newSalary->to_date = '9999-01-01';
             $newSalary->save();
         }
@@ -122,7 +124,7 @@ class UpdateEmployees implements ShouldQueue
                 $newSalary = $currentSalary + $raiseAmount;
                 break;
             case 'raise_perc':
-                $newSalary = $currentSalary * $raiseAmount;
+                $newSalary = $currentSalary + ($currentSalary * ($raiseAmount * 0.01));
                 break;
         }
         return $newSalary;
@@ -138,13 +140,16 @@ class UpdateEmployees implements ShouldQueue
     protected function updateTitle(\Illuminate\Database\Query\Builder $query, string $title)
     {
         $ids = $query->pluck('emp_no');
+        $todayDate = date('Y-m-d');
         foreach ($ids as $id)
         {
-            Title::where('emp_no', $id)->update([
-                'title' => $title,
-                'from_date' => date('Y-m-d'),
-                'to_date' => '9999-01-01'
-            ]);
+            Title::where('emp_no', $id)->where('from_date', $todayDate)->delete();
+            $newTitle = new Title;
+            $newTitle->emp_no = $id;
+            $newTitle->title = $title;
+            $newTitle->from_date = $todayDate;
+            $newTitle->to_date = '9999-01-01';
+            $newTitle->save();
         }
     }
 }

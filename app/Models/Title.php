@@ -16,6 +16,12 @@ class Title extends Model
      */
     protected $table = 'titles';
 
+    public $timestamps = false;
+
+    protected $guarded = [];
+
+    public $incrementing = false;
+
     /**
      * Relation between title and employee
      *
