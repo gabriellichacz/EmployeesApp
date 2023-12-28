@@ -1,6 +1,12 @@
 <tbody>
     <tbody>
-        <form action="/updates/rule/add" enctype="multipart/form-data" method="get">
+        <form id="updateForm" action="/updates/rule/add" enctype="multipart/form-data" method="post">
+            @csrf
+            <tr class="bg-primary text-center bg-[#F3F6FF]">
+                <th class="w-1/6 min-w-[160px] text-lg font-semibold text-black py-4 lg:py-7 px-3 lg:px-4 border-l border-transparent">
+                    {{ __('Wybierz filtry') }}
+                </th>
+            </tr>
             <tr class="bg-primary text-center bg-[#F3F6FF]">
                 <th class="w-1/6 min-w-[160px] text-lg font-semibold text-black py-4 lg:py-7 px-3 lg:px-4 border-l border-transparent">
                     <div class="row justify-content-center">
@@ -49,13 +55,6 @@
                             </select>
                         </div>
                     </div>
-                </th>
-                <th class="w-1/6 min-w-[160px] text-lg font-semibold text-black py-4 lg:py-7 px-3 lg:px-4 border-l border-transparent">
-                </th>
-                <th class="w-1/6 min-w-[160px] text-lg font-semibold text-black py-4 lg:py-7 px-3 lg:px-4 border-l border-transparent">
-                    <button type="submit" class="m-2 bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"> 
-                        {{ __('Dodaj regułę aktualizacji pracowników') }}
-                    </button>
                 </th>
             </tr>
         </form>

@@ -9,7 +9,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/filter', [App\Http\Controllers\DashboardController::class, 'filtering'])->name('filter.get');
     Route::get('/updates', [App\Http\Controllers\UpdatesController::class, 'index'])->name('updates');
-    Route::get('/updates/rule/add', [App\Http\Controllers\UpdatesController::class, 'addRule'])->name('rule.add');
+    Route::post('/updates/rule/add', [App\Http\Controllers\UpdatesController::class, 'addUpdateRule'])->name('rule.add');
 
     Route::middleware(['export.validation'])->group(function () {
         Route::post('/export', [App\Http\Controllers\DashboardController::class, 'export'])->name('export');
