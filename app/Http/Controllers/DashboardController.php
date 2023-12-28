@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Employee;
+use App\Repositories\EmployeeRepository;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -11,8 +12,8 @@ class DashboardController extends Controller
     /** @var array $filters */
     protected array $filters;
 
-    /** @var Employee $employeeModel */
-    protected Employee $employeeModel;
+    /** @var EmployeeRepository $status */
+    protected EmployeeRepository $employeeRepository;
 
     /**
      * Construct function
@@ -21,7 +22,7 @@ class DashboardController extends Controller
     {
         ini_set('max_execution_time', 300);
         $this->filters = $this->initFilters();
-        $this->employeeModel = new Employee;
+        $this->employeeRepository = new EmployeeRepository;
     }
 
     /**
@@ -45,7 +46,7 @@ class DashboardController extends Controller
      */
     public function basicTable() : \Illuminate\Contracts\Pagination\LengthAwarePaginator
     {
-        return $this->employeeModel->getEmployeeTable();
+        return $this->employeeRepository->getEmployeeTable();
     }
 
     /**
@@ -101,7 +102,7 @@ class DashboardController extends Controller
             $this->filters['department'] = $department;
         }
 
-        $model = $this->employeeModel->getEmployeeTableFiltered($gender, $department, $min, $max, $status);
+        $model = $this->employeeRepository->getEmployeeTableFiltered($gender, $department, $min, $max, $status);
 
         return view('employees.dashboard', [
             'employees' => $model,

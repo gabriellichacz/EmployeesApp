@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Employee;
+use App\Repositories\EmployeeRepository;
 use App\Models\Salary;
 use App\Models\Title;
 
@@ -33,8 +33,8 @@ class UpdateEmployees implements ShouldQueue
     /** @var array $updateRule */
     protected array $updateRule;
 
-    /** @var Employee $status */
-    protected Employee $employeeModel;
+    /** @var EmployeeRepository $status */
+    protected EmployeeRepository $employeeRepository;
 
     /**
      * Create a new job instance.
@@ -43,7 +43,7 @@ class UpdateEmployees implements ShouldQueue
      */
     public function __construct(?string $gender, ?string $department, ?int $min, ?int $max, ?string $status, array $updateRule)
     {
-        $this->employeeModel = new Employee;
+        $this->employeeRepository = new EmployeeRepository;
         $this->onQueue('emp-updates');
         $this->initFilters($gender, $department, $min, $max, $status, $updateRule);
     }
@@ -55,8 +55,7 @@ class UpdateEmployees implements ShouldQueue
      */
     public function handle()
     {
-        $query = $this->employeeModel->getEmployeeTableQuery($this->gender, $this->department, $this->min, $this->max, $this->status);
-
+        $query = $this->employeeRepository->getEmployeeTableQuery($this->gender, $this->department, $this->min, $this->max, $this->status);
         switch ($this->updateRule['rule'])
         {
             case 'raise_perc':

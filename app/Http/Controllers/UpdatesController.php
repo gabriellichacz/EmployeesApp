@@ -91,7 +91,14 @@ class UpdatesController extends Controller
             ];
         }
 
-        UpdateEmployees::dispatch($gender, $department, $min, $max, $status, $updateRule);
+        try
+        {
+            UpdateEmployees::dispatch($gender, $department, $min, $max, $status, $updateRule);
+        }
+        catch (\Exception $e)
+        {
+            return redirect()->back()->with('alert', 'Wystąpił problem: ' . $e->getMessage());
+        }
 
         return redirect()->back()->with('alert', 'Aktualizacja dodana do kolejki.');
     }
