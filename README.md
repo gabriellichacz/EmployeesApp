@@ -21,6 +21,7 @@ admin123
 4. Run ```composer install```.
 5. Run ```npm install```.
 6. Run ```php artisan key:generate```.
+7. Run ```php artisan migrate```.
 
 # Requirement  
 ## Employees Sample Database  
