@@ -17,9 +17,10 @@ admin123
 ## Instalation
 1. Import database dump files to MySQL.
 2. Make a copy of ```.env.example``` file and name it ```.env```.
-3. Run ```composer install```.
-4. Run ```npm install```.
-5. Run ```php artisan key:generate```.
+3. Configure database connection in ```.env``` file.
+4. Run ```composer install```.
+5. Run ```npm install```.
+6. Run ```php artisan key:generate```.
 
 # Requirement  
 ## Employees Sample Database  
