@@ -15,7 +15,7 @@
                 <div class="row justify-content-center">
                     <div class="form-group row">
                         <select name="gender" id="gender">
-                            <option value="A" @selected($filters['gender'] == ('A' || null))> {{ __('Wszyscy') }} </option>
+                            <option value="A" @selected($filters['gender'] == ('A' || null))> {{ __('Płeć') }} </option>
                             <option value="M" @selected($filters['gender'] == 'M')> {{ __('Mężczyźni') }} </option>
                             <option value="F" @selected($filters['gender'] == 'F')> {{ __('Kobiety') }} </option>
                         </select>
