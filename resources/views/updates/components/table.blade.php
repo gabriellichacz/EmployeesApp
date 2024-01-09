@@ -22,7 +22,7 @@
                     <div class="row justify-content-center">
                         <div class="form-group row">
                             <select name="gender" id="gender">
-                                <option value="A"> {{ __('Wszyscy') }} </option>
+                                <option value="A"> {{ __('Płeć') }} </option>
                                 <option value="M"> {{ __('Mężczyźni') }} </option>
                                 <option value="F"> {{ __('Kobiety') }} </option>
                             </select>

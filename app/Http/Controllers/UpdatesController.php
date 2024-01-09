@@ -35,7 +35,7 @@ class UpdatesController extends Controller
         $max = null;
         $min = null;
         $gender = null;
-        $status = null;
+        $status = 'working';
         $department = null;
         $updateRule = [];
 
@@ -54,10 +54,6 @@ class UpdatesController extends Controller
             $gender = $request->gender;
         }
 
-        if ($request->has('status'))
-        {
-            $status = $request->status;
-        }
 
         if ($request->has('department'))
         {
